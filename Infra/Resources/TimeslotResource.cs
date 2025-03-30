@@ -14,7 +14,7 @@ public class TimeSlotResource : HalResource
     {
         Id = timeSlot.TimeSlotId;
         StartTime = timeSlot.Start;
-        AvailableSeats = TimeSlot.AvailableSeats - timeSlot._reservations.Count;
+        AvailableSeats = TimeSlot.AvailableSeats - timeSlot.Reservations.Count;
         IsFullyBooked = timeSlot.IsFullyBooked();
 
         AddLink("GetSlotById", new { id = Id }, "self", "GET");
