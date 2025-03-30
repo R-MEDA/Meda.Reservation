@@ -25,6 +25,20 @@ public class ReservationsController : ControllerBase
         _linkService = linkService;
     }
 
+    [HttpGet("{id}",Name = "Reservation")]
+    public async Task<ActionResult<ReservationResource[]>> GetById(Guid id)
+    {
+        List<Reservation> reservations = await _reservations.GetAll();
+        Reservation reservation = reservations.FirstOrDefault(r => r.ReservationId == id);
+
+        if(reservation == null)
+        {
+            return NotFound(id);
+        }
+
+        return Ok(new ReservationResource(reservation, _linkService));
+    }
+
     [HttpGet(Name = "Reservations")]
     public async Task<ActionResult<ReservationResource[]>> GetAll()
     {

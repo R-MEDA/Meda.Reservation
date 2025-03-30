@@ -16,6 +16,8 @@ public class ReservationResource : HalResource
         ReservedAt = reservation.ReservedAt;
         TimeSlot = new TimeSlotResource(reservation.TimeSlot, linkService);
 
+        AddLink("Reservation", new { id = ReservationId }, "self", "GET");
+
         if (reservation.CanCancel())
         {
             AddLink("CancelReservation", new { id = reservation.ReservationId }, "cancel-reservation", "DELETE");
