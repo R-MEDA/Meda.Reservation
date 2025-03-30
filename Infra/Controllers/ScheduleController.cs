@@ -4,7 +4,7 @@ using Infra.Resources;
 using Domain.TimeSlot;
 using Domain.Exceptions;
 using Domain.UseCases;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Infra.Resources.Hypermedia;
 
 namespace Infra.Controllers;
 
@@ -13,81 +13,45 @@ namespace Infra.Controllers;
 public class ScheduleController : ControllerBase
 {
     private readonly ITimeSlots _timeslotRepository;
-    private readonly IBookTimeSlot _createBooking;
-    private readonly LinkGenerator _linkGenerator;
-    
+    private readonly IBookTimeSlot _bookTimeSlot;
+    private readonly ILinkService _linkService;
+
     public ScheduleController(
         ITimeSlots timeslotRepository,
         IBookTimeSlot createBooking,
-        LinkGenerator linkGenerator
-        )
+        ILinkService linkService
+    )
     {
         _timeslotRepository = timeslotRepository;
-        _createBooking = createBooking;
-        _linkGenerator = linkGenerator;
+        _bookTimeSlot = createBooking;
+        _linkService = linkService;
     }
 
-    [HttpGet("slots/{id}", Name="GetSlotById")]
+    [HttpGet("slots/{id}", Name = "GetSlotById")]
     public async Task<ActionResult<TimeSlotResource>> GetById(Guid id)
     {
         TimeSlot timeslot = await _timeslotRepository.GetById(id) ?? throw new TimeSlotNotFoundException(id);
+
         if (timeslot == null)
         {
-            return NotFound();
+            return NotFound(id);
         }
 
-        return Ok();
-
-        // return Ok(TimeSlotResource.FromTimeSlot(timeslot, Url));
+        return Ok(new TimeSlotResource(timeslot, _linkService));
     }
 
-
-    [HttpGet("available-slots", Name ="AvailableSlots")]
+    [HttpGet(Name = "Slots")]
     public async Task<ActionResult<TimeSlotResource>> GetAll()
     {
         var timeslots = await _timeslotRepository.GetAll();
-        var resources = timeslots.Select(t => TimeSlotResource.FromTimeSlot(t, HttpContext, _linkGenerator));
-        return Ok(resources);       
+        var resources = timeslots.Select(t => new TimeSlotResource(t, _linkService));
+        return Ok(resources);
     }
 
     [HttpPost("slots/{slotId}/book", Name = "BookSlot")]
     public async Task<ActionResult> BookSlot(Guid slotId)
     {
-        try
-        {
-            var reservationId = await _createBooking.Execute(slotId);
-
-            return Ok();
-
-        }
-        catch (TimeSlotNotFoundException ex)
-        {
-            return Ok(ex.Message);
-        }
+        await _bookTimeSlot.Execute(slotId);
+        return Ok();
     }
 }
-
-
-
-//     [HttpPost("slots")]
-//     public async Task<ActionResult<TimeSlotResource>> Create([FromBody] CreateTimeslotRequest request)
-//     {
-//         var timeslot = new TimeSlot(request.StartTime);
-//         await _timeslotRepository.Save(timeslot);
-        
-//         var resource = TimeSlotResource.FromTimeSlot(timeslot, Url);
-//         return CreatedAtAction(nameof(GetById), new { id = timeslot.TimeSlotId }, resource);
-//     }
-
-
-// }
-
-// public class CreateTimeslotRequest
-// {
-//     public DateTime StartTime { get; set; }
-// }
-
-// public class BookSlotRequest 
-// {
-//     public Guid CustomerId { get; set; }
-// }

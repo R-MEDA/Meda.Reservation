@@ -1,26 +1,25 @@
-// using Microsoft.AspNetCore.Mvc;
-// using Infra.Resources;
+using Microsoft.AspNetCore.Mvc;
+using Infra.Resources.Hypermedia;
+using Infra.Resources;
 
-// namespace Infra.Controllers;
+namespace Infra.Controllers;
 
-// [ApiController]
-// [Route("api")]
-// public class DiscoveryController : ControllerBase
-// {
-//     [HttpGet]
-//     public ActionResult<HalResource> GetApiRoot()
-//     {
-//         LinkGenerator linkGenerator;
+[ApiController]
+[Route("api")]
+public class DiscoveryController : ControllerBase
+{
+    private readonly ILinkService _linkService;
 
-//         linkGenerator.GetUriByName(ContextBoundObject,)
+    public DiscoveryController(ILinkService linkService)
+    {
+        _linkService = linkService;
+    }
 
-//         var resource = new HalResource();
-//         var baseUrl = $"{Request.Scheme}://{Request.Host}";
+    [HttpGet(Name = "ApiRoot")]
+    public ActionResult<ApiRoot> GetApiRoot()
+    {
+        var resource = new ApiRoot(_linkService);
 
-//         resource.AddLink("self", new Link(Url.Action(nameof(GetApiRoot), "Schedule")!));
-//         resource.AddLink("slots", new Link(Url.Action(nameof(ScheduleController.GetAll), "Schedule")!));
-//         resource.AddLink("bookings", new Link($"/api/reservations"));
-
-//         return Ok(resource);
-//     }
-// }
+        return Ok(resource);
+    }
+}
