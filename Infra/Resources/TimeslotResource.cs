@@ -5,30 +5,23 @@ namespace Infra.Resources;
 
 public class TimeSlotResource : HalResource
 {
-    public TimeSlotResource(ILinkService linkService) : base(linkService) { }
-
     public Guid Id { get; private set; }
     public DateTime StartTime { get; private set; }
     public int AvailableSeats { get; private set; }
     public bool IsFullyBooked { get; private set; }
-    public List<Link> Links { get; private set; }
 
-    public static TimeSlotResource FromTimeSlot(TimeSlot timeslot, ILinkService _linkService, HttpContext context, LinkGenerator linkGenerator)
+    public TimeSlotResource(TimeSlot timeSlot, ILinkService linkService) : base(linkService)
     {
-        var resource = new TimeSlotResource(_linkService)
-        {
-            Id = timeslot.TimeSlotId,
-            StartTime = timeslot.Start,
-            AvailableSeats = TimeSlot.AvailableSeats - timeslot._reservations.Count,
-            IsFullyBooked = timeslot.IsFullyBooked()
-        };
+        Id = timeSlot.TimeSlotId;
+        StartTime = timeSlot.Start;
+        AvailableSeats = TimeSlot.AvailableSeats - timeSlot._reservations.Count;
+        IsFullyBooked = timeSlot.IsFullyBooked();
 
-        resource.AddLink("GetSlotById", new { id = resource.Id }, "self", "GET");
+        AddLink("GetSlotById", new { id = Id }, "self", "GET");
 
-        if (!resource.IsFullyBooked)
+        if (!IsFullyBooked)
         {
-            resource.AddLink("BookSlot", new { slotId = resource.Id }, "book-slot", "POST");
+            AddLink("BookSlot", new { slotId = Id }, "book-slot", "POST");
         }
-        return resource;
     }
 }

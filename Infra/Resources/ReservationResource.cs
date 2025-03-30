@@ -4,32 +4,21 @@ using Infra.Resources.Hypermedia;
 
 public class ReservationResource : HalResource
 {
-    public Guid ReservationId { get; private set; }
-    public TimeSlotResource TimeSlot { get; private set; }
-    public string Status { get; private set; }
-    public DateTime ReservedAt { get; private set; }
+    public Guid ReservationId { get; set; }
+    public TimeSlotResource TimeSlot { get; set; }
+    public string Status { get; set; }
+    public DateTime ReservedAt { get; set; }
 
-    public static ReservationResource FromReservation(Reservation reservation, HttpContext context, LinkGenerator linkGenerator)
+    public ReservationResource(Reservation reservation, ILinkService linkService) : base(linkService)
     {
-        var resource = new ReservationResource
-        {
-            ReservationId = reservation.ReservationId,
-            Status = reservation.Status.ToString(),
-            ReservedAt = reservation.ReservedAt,
-            TimeSlot = TimeSlotResource.FromTimeSlot(reservation.TimeSlot, context, linkGenerator)
-        };
+        ReservationId = reservation.ReservationId;
+        Status = reservation.Status.ToString();
+        ReservedAt = reservation.ReservedAt;
+        TimeSlot = new TimeSlotResource(reservation.TimeSlot, linkService);
 
         if (reservation.CanCancel())
         {
-            resource.AddLink(
-                new Link(
-                    linkGenerator.GetUriByName(context, "CancelReservation", new { id = reservation.ReservationId }),
-                    "cancel-reservation",
-                    "DELETE"
-                )
-            );
+            AddLink("CancelReservation", new { id = reservation.ReservationId }, "cancel-reservation", "DELETE");
         }
-
-        return resource;
     }
 }
