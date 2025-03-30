@@ -1,0 +1,86 @@
+@baseUrl = http://localhost:5172/api
+@contentType = application/json
+
+### Get API Root
+GET {{baseUrl}}
+Accept: {{contentType}}
+
+### View API root
+GET {{{{baseUrl}}}}
+Accept: {{contentType}}
+
+### View available slots
+GET {{baseUrl}}/schedule/available-slots
+Accept: {{contentType}}
+
+### View slot details
+# Replace {id} with an actual GUID from the previous response
+GET {{baseUrl}}/schedule/slots/{id}
+Accept: {{contentType}}
+
+### Schedule new time slot
+POST {{baseUrl}}/schedule/slots
+Content-Type: {{contentType}}
+
+{
+    "startTime": "2024-01-20T09:00:00"
+}
+
+### Reserve a slot
+# Replace {slotId} with an actual GUID from available slots
+POST {{baseUrl}}/schedule/slots/0195e68b-ed0c-732c-9694-6baa827986d6/book
+Content-Type: {{contentType}}
+
+# {
+#     "slotId": "0195e689-fe01-7708-9acf-097f54ba3da5",
+#     "customerId": "00000000-0000-0000-0000-000000000001"
+# }
+
+### Book a slot
+# Replace {slotId} with an actual GUID from available slots
+POST {{baseUrl}}/schedule/slots/{slotId}/book
+Content-Type: {{contentType}}
+
+{
+    "customerId": "00000000-0000-0000-0000-000000000001"
+}
+
+### Cancel reservation
+DELETE {{baseUrl}}/reservations/{id}
+Accept: {{contentType}}
+
+### Expected Response Structure for GET /schedule/available-slots
+# {
+#   "items": [
+#     {
+#       "id": "guid",
+#       "startTime": "2024-01-20T10:00:00",
+#       "availableSeats": 10,
+#       "isFullyBooked": false,
+#       "links": [
+#         {
+#           "href": "http://localhost:5000/api/schedule/slots/{id}",
+#           "rel": "self",
+#           "method": "GET"
+#         },
+#         {
+#           "href": "http://localhost:5000/api/reservations",
+#           "rel": "reserve",
+#           "method": "POST"
+#         }
+#       ]
+#     }
+#   ],
+#   "links": [
+#     {
+#       "href": "http://localhost:5000/api/schedule/available-slots",
+#       "rel": "self",
+#       "method": "GET"
+#     },
+#     {
+#       "href": "http://localhost:5000/api/schedule/slots",
+#       "rel": "create",
+#       "method": "POST" 
+#     }
+#   ]
+# }

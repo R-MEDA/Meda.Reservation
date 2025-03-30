@@ -1,0 +1,30 @@
+.page {
+    padding: 2rem;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: var(--foreground);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.error {
+    color: #ef4444;
+    padding: 1rem;
+    border: 1px solid #ef4444;
+    border-radius: 0.5rem;
+    margin: 1rem 0;
+}
