@@ -6,15 +6,10 @@ export interface TimeslotResource extends HalResource {
     availableSeats: number;
     isFullyBooked: boolean;
     _links: {
-        self: {
-            href: string;
-            method: 'GET';
-        };
-        book?: {
-            href: string;
-            method: 'POST';
-        };
-    };
+        href: string;
+        rel: string;
+        method: string;
+    }[];
 }
 
 export type TimeslotsResponse = TimeslotResource[];

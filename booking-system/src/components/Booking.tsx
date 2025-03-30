@@ -13,7 +13,7 @@ export default function Booking({ booking, onCancelSuccess }: BookingProps) {
     const [error, setError] = useState<string>();
 
     const handleCancel = async () => {
-        const cancelLink = booking._links['cancel'];
+        const cancelLink = booking._links.find(link => link.rel === 'cancel');
         if (!cancelLink) return;
 
         setIsLoading(true);
@@ -21,26 +21,20 @@ export default function Booking({ booking, onCancelSuccess }: BookingProps) {
 
         try {
             await ApiService.delete(cancelLink.href);
-            onCancelSuccess(booking.id);
+            onCancelSuccess(booking.reservationId);
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Failed to cancel booking');
+            setError(err instanceof Error ? err.message : 'Failed to cancel reservation');
         } finally {
             setIsLoading(false);
         }
     };
 
-    const statusColor = {
-        Confirmed: 'confirmed',
-        Cancelled: 'cancelled',
-        CheckedIn: 'checkedIn'
-    }[booking.status];
-
-    const dateTime = new Date(booking.reservedAt);
+    const dateTime = new Date(booking.timeSlot.startTime);
 
     return (
         <div className={styles.card}>
             <div className={styles.header}>
-                <span className={`${styles.status} ${styles[statusColor]}`}>
+                <span className={`${styles.status} ${styles[booking.status.toLowerCase()]}`}>
                     {booking.status}
                 </span>
                 <time className={styles.date}>
@@ -48,17 +42,17 @@ export default function Booking({ booking, onCancelSuccess }: BookingProps) {
                 </time>
             </div>
             <div className={styles.info}>
-                <p>Booking ID: {booking.reservationId}</p>
-                <p>Time Slot: {booking.timeSlotId}</p>
+                <p>Reservation ID: {booking.reservationId}</p>
+                <p>Time: {dateTime.toLocaleTimeString()}</p>
             </div>
             {error && <div className={styles.error}>{error}</div>}
-            {booking._links.cancel && (
+            {booking._links.some(link => link.rel === 'cancel') && (
                 <button 
                     className={styles.cancelButton}
                     onClick={handleCancel}
                     disabled={isLoading}
                 >
-                    {isLoading ? "Canceling..." : "Cancel Booking"}
+                    {isLoading ? "Canceling..." : "Cancel Reservation"}
                 </button>
             )}
         </div>

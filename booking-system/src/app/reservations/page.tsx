@@ -12,7 +12,7 @@ export default function Bookings() {
     const [error, setError] = useState<string>();
 
     const fetchBookings = () => {
-        ApiService.followLink('bookings')
+        ApiService.followLink('reservations')
             .then(response => {
                 if (Array.isArray(response)) {
                     setBookings(response);
@@ -28,7 +28,7 @@ export default function Bookings() {
     }, []);
 
     const handleCancelSuccess = (bookingId: string) => {
-        setBookings(bookings.filter(booking => booking.id !== bookingId));
+        setBookings(bookings.filter(booking => booking.reservationId !== bookingId));
     };
 
     if (error) {
@@ -39,14 +39,14 @@ export default function Bookings() {
         <div className={styles.page}>
             <div className={styles.container}>
                 <BackToHome />
-                <h1 className={styles.title}>Your Bookings</h1>
+                <h1 className={styles.title}>Your Reservations</h1>
                 <div className={styles.grid}>
                     {bookings.length === 0 ? (
-                        <p className={styles.empty}>No bookings found</p>
+                        <p className={styles.empty}>No reservations found</p>
                     ) : (
                         bookings.map(booking => (
                             <Booking 
-                                key={booking.id} 
+                                key={booking.reservationId} 
                                 booking={booking} 
                                 onCancelSuccess={handleCancelSuccess}
                             />

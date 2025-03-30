@@ -1,11 +1,7 @@
-import { HalResource } from "./HalResource";
+import { Link } from "./HalResource";
 
-export interface ApiRoot extends HalResource {
-    _links : {
-        self: { href: string };
-        'available-slots': { href: string };
-        'create-slot': { href: string; method: 'POST' };
-    }
+export interface ApiRoot {
+    _links: Link[];
 }
 
-export type RootKeys = "self" | "slots" | "bookings";
+export type RootKeys = 'self' | 'slots' | 'reservations';

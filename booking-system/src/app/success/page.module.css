@@ -1,0 +1,65 @@
+.page {
+    padding: 2rem;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.card {
+    background: var(--background);
+    border: 1px solid var(--foreground);
+    border-radius: 0.5rem;
+    padding: 2rem;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.icon {
+    font-size: 4rem;
+    color: #22c55e;
+    margin-bottom: 1rem;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--foreground);
+    margin-bottom: 2rem;
+}
+
+.details {
+    color: var(--foreground);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.date {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 1rem 0 0.5rem;
+}
+
+.time {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.confirmation {
+    font-family: monospace;
+    background: var(--foreground);
+    color: var(--background);
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+    display: inline-block;
+}
+
+.error {
+    color: #ef4444;
+    padding: 1rem;
+    border: 1px solid #ef4444;
+    border-radius: 0.5rem;
+    margin: 1rem 0;
+}
