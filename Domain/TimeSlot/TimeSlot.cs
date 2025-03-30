@@ -7,28 +7,33 @@ public class TimeSlot
     public static readonly int AvailableSeats = 50;
     public Guid TimeSlotId { get; private set; }
     public DateTime Start { get; private set; }
-    public List<Reservation> _reservations { get; private set; }
-    public List<Reservation> _checkedInReservations {get; private set; }
+    public List<Reservation> Reservations { get; private set; }
+    public List<Reservation> CheckedInReservations { get; private set; }
 
     public TimeSlot(DateTime start)
     {
         TimeSlotId = Guid.CreateVersion7();
         Start = start;
-        _reservations = [];
-        _checkedInReservations = [];
+        Reservations = [];
+        CheckedInReservations = [];
     }
-    public bool IsFullyBooked() => _reservations.Count >= AvailableSeats;
+    public bool IsFullyBooked() => Reservations.Count >= AvailableSeats;
 
     public void AddReservation(Reservation reservation)
-    {    
-        _reservations.Add(reservation);
+    {
+        Reservations.Add(reservation);
     }
 
     public void MarkReservationAsCheckedIn(Reservation reservation)
     {
-        if (_reservations?.Contains(reservation) == true)
+        if (Reservations?.Contains(reservation) == true)
         {
-            _checkedInReservations.Add(reservation);
+            CheckedInReservations.Add(reservation);
         }
+    }
+
+    public void CancelReservation(Reservation reservation)
+    {
+        Reservations.Remove(reservation);
     }
 }

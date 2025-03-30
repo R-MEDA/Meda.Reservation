@@ -11,13 +11,13 @@ public class MockReservations : IReservations
         return Task.Run(() => _reservations);
     }
 
-    public Task<Reservation?> GetById(Guid id)
+    public async Task<Reservation?> GetById(Guid id)
     {
-        return Task.Run( () => _reservations.Where(r => r.ReservationId == id).FirstOrDefault());
+        return await Task.Run(() => _reservations.FirstOrDefault(r => r.ReservationId == id));
     }
 
-    public Task Save(Reservation reservation)
+    public async Task Save(Reservation reservation)
     {
-        return Task.Run(() => _reservations.Add(reservation));    
+        await Task.Run(() => _reservations.Add(reservation));
     }
 }

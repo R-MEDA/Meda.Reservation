@@ -7,28 +7,28 @@ using Domain.Exceptions;
 
 public class BookTimeSlot : IBookTimeSlot
 {
-    private readonly ITimeSlots _timeSlotRepository;
-    private readonly IReservations _reservationRepository;
+    private readonly ITimeSlots _timeSlots;
+    private readonly IReservations _reservations;
 
-    public BookTimeSlot(ITimeSlots timeSlotRepository, IReservations reservationRepository)
+    public BookTimeSlot(ITimeSlots timeSlots, IReservations reservations)
     {
-        _timeSlotRepository = timeSlotRepository;
-        _reservationRepository = reservationRepository;
+        _timeSlots = timeSlots;
+        _reservations = reservations;
     }
 
     public async Task<Reservation> Execute(Guid timeSlotId)
     {
-        TimeSlot timeSlot = await _timeSlotRepository.GetById(timeSlotId);
+        TimeSlot timeSlot = await _timeSlots.GetById(timeSlotId) ?? throw new TimeSlotNotFoundException(timeSlotId);
 
-        if (timeSlot == null || timeSlot.IsFullyBooked())
+        if (timeSlot.IsFullyBooked())
         {
             throw new TimeSlotFullyBookedException(timeSlot.TimeSlotId);
         }
 
-        Reservation reservation = new Reservation(timeSlot);
-
-        await _reservationRepository.Save(reservation);
+        Reservation reservation = new(timeSlot);
         timeSlot.AddReservation(reservation);
+
+        await _reservations.Save(reservation);
 
         return reservation;
     }

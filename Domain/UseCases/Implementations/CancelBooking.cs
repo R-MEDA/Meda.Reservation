@@ -7,25 +7,16 @@ using Domain.TimeSlot;
 
 public class CancelBooking : ICancelBooking
 {
-    private readonly IReservations _reservationRepository;
-    private readonly ITimeSlots _timeslotRepository;
+    private readonly IReservations _reservations;
 
-    public CancelBooking(
-        IReservations reservationRepository,
-        ITimeSlots timeslotRepository)
+    public CancelBooking(IReservations reservationRepository)
     {
-        _reservationRepository = reservationRepository;
-        _timeslotRepository = timeslotRepository;
+        _reservations = reservationRepository;
     }
 
     public async Task Execute(Guid reservationId)
     {
-        Reservation reservation = await _reservationRepository.GetById(reservationId) ?? throw new ReservationNotFoundException(reservationId);
-        // TimeSlot timeslot = await _timeslotRepository.GetById(reservation.TimeSlot.TimeSlotId) ?? throw new TimeSlotNotFoundException(reservation.TimeSlot.TimeSlotId);
-        // await _timeslotRepository.Save(timeslot);
-
-
+        Reservation reservation = await _reservations.GetById(reservationId) ?? throw new ReservationNotFoundException(reservationId);
         reservation.Cancel();
-        await _reservationRepository.Save(reservation);
     }
 }

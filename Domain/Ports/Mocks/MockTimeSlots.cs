@@ -34,24 +34,18 @@ public class MockTimeSlots : ITimeSlots
         }
     }
 
-    public Task<TimeSlot?> GetById(Guid id)
+    public async Task<TimeSlot?> GetById(Guid id)
     {
-        return Task.Run(() => _timeSlots.Find(ts => ts.TimeSlotId == id));
+        return await Task.Run(() => _timeSlots.Find(ts => ts.TimeSlotId == id));
     }
 
-    public Task Save(TimeSlot timeSlot)
+    public async Task Save(TimeSlot timeSlot)
     {
-        return Task.Run(() =>
-        {
-            _timeSlots.Add(timeSlot);
-        });
+        await Task.Run(() => _timeSlots.Add(timeSlot));
     }
 
-    public Task<List<TimeSlot>> GetAll()
+    public async Task<List<TimeSlot>> GetAll()
     {
-        return Task.Run(() =>
-        {
-            return _timeSlots;
-        });
+        return await Task.Run(() => _timeSlots);
     }
 }

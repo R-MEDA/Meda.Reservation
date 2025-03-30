@@ -33,11 +33,14 @@ public class Reservation
             throw new InvalidOperationException("Cannot cancel the reservation within 24 hours of the reserved date.");
         }
 
+        TimeSlot.CancelReservation(this);
+
         Status = ReservationStatus.Cancelled;
     }
 
     public void CheckIn()
     {
         Status = ReservationStatus.CheckedIn;
+        TimeSlot.MarkReservationAsCheckedIn(this);
     }
 }

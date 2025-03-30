@@ -6,20 +6,19 @@ using Domain.Reservation;
 
 public class CheckIn : ICheckIn
 {
-    private readonly IReservations _reservationRepository;
+    private readonly IReservations _reservations;
 
-    public CheckIn(IReservations reservationRepository)
+    public CheckIn(IReservations reservations)
     {
-        _reservationRepository = reservationRepository;
+        _reservations = reservations;
     }
 
     public async Task Execute(Guid reservationId)
     {
-        Reservation reservation = await _reservationRepository.GetById(reservationId)
-            ?? throw new ReservationNotFoundException(reservationId);
+        Reservation reservation = await _reservations.GetById(reservationId) ?? throw new ReservationNotFoundException(reservationId);
 
         reservation.CheckIn();
 
-        await _reservationRepository.Save(reservation);
+        await _reservations.Save(reservation);
     }
 }
