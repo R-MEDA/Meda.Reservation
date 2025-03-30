@@ -13,10 +13,6 @@ public class LinkService : ILinkService
 
     public Link Generate(string endpointName, object? routeValues, string rel, string method)
     {
-        return new Link(
-            _linkGenerator.GetUriByName(_httpContextAccessor.HttpContext, endpointName, routeValues),
-            rel,
-            method
-        );
+        return new Link(_linkGenerator.GetUriByName(_httpContextAccessor.HttpContext, endpointName, routeValues), rel, method);
     }
 }

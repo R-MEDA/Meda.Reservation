@@ -1,5 +1,3 @@
-using Domain.Reservation;
-
 namespace Domain.Exceptions;
 
 public class ReservationNotFoundException : Exception

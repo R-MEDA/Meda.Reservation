@@ -3,7 +3,6 @@ namespace Domain.UseCases.Implementations;
 using Domain.Reservation;
 using Domain.Ports;
 using Domain.Exceptions;
-using Domain.TimeSlot;
 
 public class CancelBooking : ICancelBooking
 {

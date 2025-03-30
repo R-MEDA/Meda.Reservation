@@ -20,7 +20,7 @@ public class ReservationResource : HalResource
 
         if (reservation.CanCancel())
         {
-            AddLink("CancelReservation", new { id = reservation.ReservationId }, "cancel-reservation", "DELETE");
+            AddLink("CancelReservation", new { id = reservation.ReservationId }, "cancel-reservation", "POST");
         }
     }
 }

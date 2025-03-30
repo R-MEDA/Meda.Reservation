@@ -47,7 +47,7 @@ public class ReservationsController : ControllerBase
         return Ok(resources);
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id}", Name="CancelReservation")]
     public async Task<ActionResult> Cancel(Guid id)
     {
         await _cancelBooking.Execute(id);

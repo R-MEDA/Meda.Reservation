@@ -1,5 +1,3 @@
-using Domain.TimeSlot;
-
 namespace Domain.Exceptions;
 
 public class TimeSlotNotFoundException : Exception

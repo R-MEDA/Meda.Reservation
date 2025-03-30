@@ -1,7 +1,6 @@
 namespace Domain.UseCases;
 
 using Domain.Reservation;
-using Domain.TimeSlot;
 
 public interface IBookTimeSlot
 {
