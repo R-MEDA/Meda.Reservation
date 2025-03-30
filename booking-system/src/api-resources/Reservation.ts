@@ -13,7 +13,8 @@ export interface ReservationResource extends HalResource {
         };
         cancel?: {
             href: string; 
-            method: 'DELETE';
+            rel: string;
+            method: 'POST';
         };
     };
 }

@@ -15,7 +15,7 @@ export interface BookingResource extends HalResource {
             rel: string;
             method: 'GET';
         };
-        cancel?: {
+        'cancel-reservation'?: {  // Updated name to match API
             href: string;
             rel: string;
             method: 'DELETE';

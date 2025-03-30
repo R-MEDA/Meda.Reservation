@@ -13,7 +13,7 @@ export default function Booking({ booking, onCancelSuccess }: BookingProps) {
     const [error, setError] = useState<string>();
 
     const handleCancel = async () => {
-        const cancelLink = booking._links.find(link => link.rel === 'cancel');
+        const cancelLink = booking._links.find(link => link.rel === 'cancel-reservation');
         if (!cancelLink) return;
 
         setIsLoading(true);
@@ -21,7 +21,7 @@ export default function Booking({ booking, onCancelSuccess }: BookingProps) {
 
         try {
             await ApiService.delete(cancelLink.href);
-            onCancelSuccess(booking.reservationId);
+            await onCancelSuccess(booking.reservationId);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Failed to cancel reservation');
         } finally {
@@ -46,7 +46,7 @@ export default function Booking({ booking, onCancelSuccess }: BookingProps) {
                 <p>Time: {dateTime.toLocaleTimeString()}</p>
             </div>
             {error && <div className={styles.error}>{error}</div>}
-            {booking._links.some(link => link.rel === 'cancel') && (
+            {booking._links.some(link => link.rel === 'cancel-reservation') && (
                 <button 
                     className={styles.cancelButton}
                     onClick={handleCancel}

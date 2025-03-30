@@ -18,7 +18,7 @@ public class ReservationResource : HalResource
 
         AddLink("Reservation", new { id = ReservationId }, "self", "GET");
 
-        if (reservation.CanCancel())
+        if (reservation.CanCancel() && reservation.Status != ReservationStatus.Cancelled)
         {
             AddLink("CancelReservation", new { id = reservation.ReservationId }, "cancel-reservation", "POST");
         }

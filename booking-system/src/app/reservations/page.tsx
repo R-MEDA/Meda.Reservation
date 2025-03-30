@@ -27,8 +27,15 @@ export default function Bookings() {
         fetchBookings();
     }, []);
 
-    const handleCancelSuccess = (bookingId: string) => {
-        setBookings(bookings.filter(booking => booking.reservationId !== bookingId));
+    const handleCancelSuccess = async (bookingId: string) => {
+        try {
+            const updatedBooking = await ApiService.get<BookingResource>(`/reservations/${bookingId}`);
+            setBookings(bookings.map(booking => 
+                booking.reservationId === bookingId ? updatedBooking : booking
+            ));
+        } catch (err) {
+            setError('Failed to refresh booking data');
+        }
     };
 
     if (error) {
