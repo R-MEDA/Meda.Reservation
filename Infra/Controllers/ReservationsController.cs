@@ -3,6 +3,7 @@ using Domain.UseCases;
 using Domain.Reservation;
 using Domain.Ports;
 using Infra.Resources.Hypermedia;
+using Infra.Resources;
 
 namespace Infra.Controllers;
 
