@@ -10,7 +10,7 @@ interface BookingProps {
 
 export default function Booking({ booking, onCancelSuccess }: BookingProps) {
     const [isLoading, setIsLoading] = useState(false);
-    const [cancelLink] = useState(booking._links.find(link => link.rel === 'cancel-reservation')?.href);
+    const [cancelLink, setCancelLink] = useState(booking._links.find(link => link.rel === 'cancel-reservation')?.href);
 
     const handleCancel = async () => {
         if (!cancelLink) return;
@@ -19,6 +19,8 @@ export default function Booking({ booking, onCancelSuccess }: BookingProps) {
 
         await ApiService.delete(cancelLink);
         onCancelSuccess(booking.reservationId);
+
+        setCancelLink(() => undefined);
 
         setIsLoading(false);
     };
