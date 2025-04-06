@@ -5,17 +5,22 @@ import styles from './Booking.module.css';
 
 interface BookingProps {
     booking: BookingResource;
+    onCancelSuccess: (bookingId: string) => void;
 }
 
-export default function Booking({ booking }: BookingProps) {
+export default function Booking({ booking, onCancelSuccess }: BookingProps) {
     const [isLoading, setIsLoading] = useState(false);
     const [cancelLink] = useState(booking._links.find(link => link.rel === 'cancel-reservation')?.href);
 
     const handleCancel = async () => {
         if (!cancelLink) return;
-        setIsLoading(true);    
+
+        setIsLoading(true);
+
         await ApiService.delete(cancelLink);
-        setIsLoading(false);        
+        onCancelSuccess(booking.reservationId);
+
+        setIsLoading(false);
     };
 
     const dateTime = new Date(booking.timeSlot.startTime);
@@ -36,7 +41,7 @@ export default function Booking({ booking }: BookingProps) {
             </div>
 
             {cancelLink && (
-                <button 
+                <button
                     className={styles.cancelButton}
                     onClick={handleCancel}
                     disabled={isLoading}

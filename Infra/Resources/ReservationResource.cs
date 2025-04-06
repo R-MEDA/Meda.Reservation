@@ -1,7 +1,7 @@
 using Domain.Reservation;
-using Infra.Resources;
 using Infra.Resources.Hypermedia;
 
+namespace Infra.Resources;
 public class ReservationResource : HalResource
 {
     public Guid ReservationId { get; set; }
