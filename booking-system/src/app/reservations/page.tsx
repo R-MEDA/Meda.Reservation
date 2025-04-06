@@ -1,6 +1,6 @@
 'use client';
 
-import { BookingsResponse } from '@/api-resources/Booking';
+import { BookingResource, BookingsResponse } from '@/api-resources/Booking';
 import BackToHome from '@/components/BackToHome';
 import Booking from '@/components/Booking';
 import { ApiService } from '@/services/api';

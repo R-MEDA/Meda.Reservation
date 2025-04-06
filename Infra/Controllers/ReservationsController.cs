@@ -29,7 +29,7 @@ public class ReservationsController : ControllerBase
     public async Task<ActionResult<ReservationResource[]>> GetById(Guid id)
     {
         List<Reservation> reservations = await _reservations.GetAll();
-        Reservation reservation = reservations.FirstOrDefault(r => r.ReservationId == id);
+        Reservation? reservation = reservations.FirstOrDefault(r => r.ReservationId == id);
 
         if(reservation == null)
         {

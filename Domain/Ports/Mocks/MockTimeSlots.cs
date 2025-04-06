@@ -7,11 +7,11 @@ public class MockTimeSlots : ITimeSlots
 {
     private readonly List<TimeSlot> _timeSlots =
     [
-        new TimeSlot(DateTime.Today.AddHours(10)),
-        new TimeSlot(DateTime.Today.AddHours(11)),
-        new TimeSlot(DateTime.Today.AddMonths(3).AddHours(14)),
-        new TimeSlot(DateTime.Today.AddHours(15)),
-        new TimeSlot(DateTime.Today.AddHours(16))
+        new TimeSlot(DateTime.Today.AddDays(1).AddHours(10)),
+        new TimeSlot(DateTime.Today.AddDays(1).AddHours(11)),
+        new TimeSlot(DateTime.Today.AddDays(1).AddMonths(3).AddHours(14)),
+        new TimeSlot(DateTime.Today.AddDays(1).AddHours(15)),
+        new TimeSlot(DateTime.Today.AddDays(1).AddHours(16))
     ];
 
     public MockTimeSlots()

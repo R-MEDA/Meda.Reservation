@@ -6,21 +6,16 @@ import styles from './TimeSlot.module.css';
 
 export default function TimeSlot({ slot }: { slot: TimeslotResource }) {
     const router = useRouter();
-    const [isBooking, setIsBooking] = useState(false);
+    const [bookLink] = useState(slot._links.find(link => link.rel === 'book-slot')?.href);
     const [error, setError] = useState<string>();
 
     const dateTime = new Date(slot.startTime);
-    const canBook = !slot.isFullyBooked && slot._links.some(link => link.rel === 'book-slot');
 
     const handleBook = async () => {
-        const bookLink = slot._links.find(link => link.rel === 'book-slot');
         if (!bookLink) return;
-
-        setIsBooking(true);
-        setError(undefined);
-
+        
         try {
-            const response = await ApiService.post(bookLink.href);
+            const response = await ApiService.post(bookLink);
             if (response && 'reservationId' in response) {
                 router.push(`/success?booking=${response.reservationId}`);
             } else {
@@ -29,8 +24,6 @@ export default function TimeSlot({ slot }: { slot: TimeslotResource }) {
         } catch (err) {
             console.error('Booking error:', err);
             setError(err instanceof Error ? err.message : 'Failed to book slot');
-        } finally {
-            setIsBooking(false);
         }
     };
 
@@ -57,15 +50,11 @@ export default function TimeSlot({ slot }: { slot: TimeslotResource }) {
             </div>
 
             {error && <div className={styles.error}>{error}</div>}
-            
-            {canBook && (
-                <button 
-                    className={styles.bookButton}
-                    disabled={isBooking}
-                    onClick={handleBook}
-                >
-                    {isBooking ? "Booking..." : "Book Now"}
-                </button>
+
+            {bookLink && (
+                <button className={styles.bookButton} onClick={handleBook}> 
+                    Book now
+                </button> 
             )}
         </div>
     );

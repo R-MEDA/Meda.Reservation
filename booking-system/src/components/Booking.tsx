@@ -5,28 +5,17 @@ import styles from './Booking.module.css';
 
 interface BookingProps {
     booking: BookingResource;
-    onCancelSuccess: (bookingId: string) => void;
 }
 
-export default function Booking({ booking, onCancelSuccess }: BookingProps) {
+export default function Booking({ booking }: BookingProps) {
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string>();
+    const [cancelLink] = useState(booking._links.find(link => link.rel === 'cancel-reservation')?.href);
 
     const handleCancel = async () => {
-        const cancelLink = booking._links.find(link => link.rel === 'cancel-reservation');
         if (!cancelLink) return;
-
-        setIsLoading(true);
-        setError(undefined);
-
-        try {
-            await ApiService.delete(cancelLink.href);
-            await onCancelSuccess(booking.reservationId);
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'Failed to cancel reservation');
-        } finally {
-            setIsLoading(false);
-        }
+        setIsLoading(true);    
+        await ApiService.delete(cancelLink);
+        setIsLoading(false);        
     };
 
     const dateTime = new Date(booking.timeSlot.startTime);
@@ -45,8 +34,8 @@ export default function Booking({ booking, onCancelSuccess }: BookingProps) {
                 <p>Reservation ID: {booking.reservationId}</p>
                 <p>Time: {dateTime.toLocaleTimeString()}</p>
             </div>
-            {error && <div className={styles.error}>{error}</div>}
-            {booking._links.some(link => link.rel === 'cancel-reservation') && (
+
+            {cancelLink && (
                 <button 
                     className={styles.cancelButton}
                     onClick={handleCancel}

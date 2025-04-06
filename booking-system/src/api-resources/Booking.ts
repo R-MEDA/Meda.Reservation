@@ -1,26 +1,15 @@
-import { HalResource } from './HalResource';
+import { HalResource, Link } from './HalResource';
 
 export interface BookingResource extends HalResource {
-    reservationId: string; // Changed from id
+    reservationId: string;
     timeSlot: {
         timeSlotId: string;
         startTime: string;
         availableSeats: number;
     };
-    status: 'Confirmed' | 'Cancelled' | 'CheckedIn';
+    status: string;
     reservedAt: string;
-    _links: {
-        self: {
-            href: string;
-            rel: string;
-            method: 'GET';
-        };
-        'cancel-reservation'?: {  // Updated name to match API
-            href: string;
-            rel: string;
-            method: 'DELETE';
-        };
-    }[];
+    _links: Link[];
 }
 
 export type BookingsResponse = BookingResource[];
