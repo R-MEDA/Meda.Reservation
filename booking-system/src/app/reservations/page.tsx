@@ -23,9 +23,7 @@ export default function Bookings() {
             .catch(err => setError(err.message));
     };
 
-    useEffect(() => {
-        fetchBookings();
-    }, []);
+    useEffect(() => fetchBookings(), []);
 
     const handleCancelSuccess = async (bookingId: string) => {
         try {
