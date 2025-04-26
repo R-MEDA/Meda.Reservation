@@ -1,6 +1,6 @@
 # Business-Centric APIs with HATEOAS Example
 
-This repository demonstrates the implementation of **Business-Centric APIs** using **HATEOAS** with **.NET** for the backend and **React/NEXT.js** for the frontend. The goal is to build meaningful, business-driven APIs and decouple the client from the backend using **HATEOAS**.
+This repository demonstrates the implementation of **Business-Centric APIs** using **HATEOAS** with **.NET** for the backend and **React/NEXT.js** for the frontend. The goal is to build meaningful, business-driven APIs and decouple the client from the backend, and even more important: **the domain model** using **HATEOAS**.
 
 For more info please read the following article: [From CRUD to Clarity: Business-Centric APIs with HATEOAS](https://www.linkedin.com/pulse/from-crud-clarity-business-centric-apis-hateoas-rashid-meda-pv0je?trackingId=u20vr8EvISEanwEekm51XQ%3D%3D&lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base%3BkYYjw6udQd%2BRHIq9PyAfGg%3D%3D)
 
